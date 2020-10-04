@@ -11,7 +11,7 @@ class RecipientController {
       complement: Yup.string().required(),
       state: Yup.string().required(),
       city: Yup.string().required(),
-      strzip_codeeet: Yup.string().required(),
+      zip_code: Yup.string().required(),
     });
 
     if (!(await schema.isValid(request.body))) {
@@ -60,14 +60,14 @@ class RecipientController {
       complement: Yup.string().required(),
       state: Yup.string().required(),
       city: Yup.string().required(),
-      strzip_codeeet: Yup.string().required(),
+      zip_code: Yup.string().required(),
     });
 
     if (!(await schema.isValid(request.body))) {
       return response.status(400).json({ error: 'Validation fails' });
     }
 
-    const { email } = await Recipient.create(request.body);
+    const email = request.body;
 
     const recipient = await Recipient.findByPk(request.recipientId);
 
