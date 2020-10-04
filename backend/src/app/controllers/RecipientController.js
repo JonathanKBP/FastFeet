@@ -67,22 +67,21 @@ class RecipientController {
       return response.status(400).json({ error: 'Validation fails' });
     }
 
-    const email = request.body;
+    const recipientExists = await Recipient.findOne({
+      where: { email: request.body.email },
+    });
 
-    const recipient = await Recipient.findByPk(request.recipientId);
-
-    if (email !== recipient.email) {
-      const recipientExists = await Recipient.findOne({ where: { email } });
-
-      if (recipientExists) {
-        return response
-          .status(400)
-          .json({ error: 'Recipient already exists.' });
-      }
+    if (!recipientExists) {
+      return response.status(400).json({ error: 'User does not exist.' });
     }
+
+    const recipient = await Recipient.findOne({
+      where: { email: request.body.email },
+    });
 
     const {
       id,
+      email,
       name,
       street,
       number,
